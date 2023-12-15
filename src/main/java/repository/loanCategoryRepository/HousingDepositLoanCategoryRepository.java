@@ -1,0 +1,6 @@
+package repository.loanCategoryRepository;
+
+import entity.loanCategory.HousingDepositLoanCategory;
+
+public interface HousingDepositLoanCategoryRepository extends LoanCategoryRepository<HousingDepositLoanCategory>{
+}

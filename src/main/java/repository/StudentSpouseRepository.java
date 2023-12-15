@@ -1,7 +1,7 @@
 package repository;
 
 
-import entity.StudentSpouse;
+import entity.person.StudentSpouse;
 
 public interface StudentSpouseRepository extends PersonRepository<StudentSpouse> {
 }

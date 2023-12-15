@@ -1,6 +1,6 @@
 package repository.impl;
 
-import entity.Student;
+import entity.person.Student;
 import repository.StudentRepository;
 
 import javax.persistence.EntityManager;

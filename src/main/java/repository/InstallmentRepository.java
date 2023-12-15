@@ -2,7 +2,7 @@ package repository;
 
 import base.repository.BaseEntityRepository;
 import entity.Installment;
-import entity.Student;
+import entity.person.Student;
 
 import java.util.List;
 @SuppressWarnings("unused")

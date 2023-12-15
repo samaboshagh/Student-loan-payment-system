@@ -2,7 +2,7 @@ package service.impl;
 
 import base.service.impl.BaseEntityServiceImpl;
 import entity.Installment;
-import entity.Student;
+import entity.person.Student;
 import repository.InstallmentRepository;
 import service.InstallmentService;
 

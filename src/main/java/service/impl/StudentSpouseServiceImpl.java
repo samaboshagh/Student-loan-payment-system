@@ -1,6 +1,6 @@
 package service.impl;
 
-import entity.StudentSpouse;
+import entity.person.StudentSpouse;
 import repository.StudentSpouseRepository;
 import service.StudentSpouseService;
 

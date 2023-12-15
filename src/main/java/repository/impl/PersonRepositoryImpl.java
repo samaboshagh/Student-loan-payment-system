@@ -1,7 +1,7 @@
 package repository.impl;
 
 import base.repository.impl.BaseEntityRepositoryImpl;
-import entity.Person;
+import entity.person.Person;
 import repository.PersonRepository;
 
 import javax.persistence.EntityManager;

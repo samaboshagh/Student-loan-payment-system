@@ -1,7 +1,7 @@
 package service.impl;
 
 import base.service.impl.BaseEntityServiceImpl;
-import entity.Person;
+import entity.person.Person;
 import repository.PersonRepository;
 import service.PersonService;
 

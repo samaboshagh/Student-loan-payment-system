@@ -1,6 +1,6 @@
 package service;
 
-import entity.Student;
+import entity.person.Student;
 
 @SuppressWarnings("unused")
 public interface StudentService extends PersonService<Student>{

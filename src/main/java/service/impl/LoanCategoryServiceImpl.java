@@ -1,18 +1,18 @@
 package service.impl;
 
 import base.service.impl.BaseEntityServiceImpl;
-import entity.LoanCategory;
-import entity.Student;
-import entity.enumeration.AcademicLevel;
-import repository.LoanCategoryRepository;
+import entity.loanCategory.LoanCategory;
+import entity.person.Student;
+import repository.loanCategoryRepository.LoanCategoryRepository;
 import service.LoanCategoryService;
 
 @SuppressWarnings("unused")
-public class LoanCategoryServiceImpl
-        extends BaseEntityServiceImpl<LoanCategory, Integer, LoanCategoryRepository>
-        implements LoanCategoryService {
+public class LoanCategoryServiceImpl<T extends LoanCategory , R extends LoanCategoryRepository<T>>
+        extends BaseEntityServiceImpl<T, Integer, R>
+        implements LoanCategoryService<T> {
 
-    public LoanCategoryServiceImpl(LoanCategoryRepository repository) {
+
+    public LoanCategoryServiceImpl(R repository) {
         super(repository);
     }
 
@@ -27,7 +27,7 @@ public class LoanCategoryServiceImpl
     }
 
     @Override
-    public Double academicLevelAndTheirLoanAmount(Student student) {
+    public Double academicLevelAndTheirLoanAmount() {
         return null;
     }
 }

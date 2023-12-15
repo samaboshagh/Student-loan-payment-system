@@ -2,7 +2,7 @@ package repository.impl;
 
 import base.repository.impl.BaseEntityRepositoryImpl;
 import entity.Installment;
-import entity.Student;
+import entity.person.Student;
 import repository.InstallmentRepository;
 
 import javax.persistence.EntityManager;
