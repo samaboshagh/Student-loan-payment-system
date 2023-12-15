@@ -1,5 +1,6 @@
-package entity;
+package entity.person;
 
+import entity.Card;
 import entity.enumeration.AcademicLevel;
 import entity.enumeration.UniversityType;
 import entity.loan.Loan;

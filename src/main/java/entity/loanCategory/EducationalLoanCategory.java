@@ -1,4 +1,4 @@
-package entity.loan;
+package entity.loanCategory;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,10 +6,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @Entity
-public class TuitionLoan extends Loan {
+public class EducationalLoanCategory extends LoanCategory {
 }

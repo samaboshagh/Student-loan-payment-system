@@ -2,6 +2,7 @@ package entity;
 
 import base.entity.BaseEntity;
 import entity.enumeration.BankType;
+import entity.person.Student;
 import lombok.*;
 
 import javax.persistence.*;

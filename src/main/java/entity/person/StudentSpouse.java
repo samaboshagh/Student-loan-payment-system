@@ -1,4 +1,4 @@
-package entity;
+package entity.person;
 
 import lombok.*;
 
@@ -15,8 +15,5 @@ public class StudentSpouse extends Person {
 
     @Column(name = "is_student",columnDefinition = "boolean default false")
     private Boolean isStudent;
-
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private Student student;
 
 }
