@@ -25,7 +25,7 @@ public abstract class BaseEntityRepositoryImpl<T extends BaseEntity<ID>, ID exte
             beginTransaction();
             saveWithoutTransaction(entity);
             commitTransaction();
-            entityManager.clear();
+//            entityManager.clear();
         } catch (Exception e) {
             e.printStackTrace();
             rollBack();
@@ -45,13 +45,15 @@ public abstract class BaseEntityRepositoryImpl<T extends BaseEntity<ID>, ID exte
     @Override
     public void delete(ID id) {
         try {
-            beginTransaction();
-            entityManager.createQuery("DELETE FROM " + getEntityClass().getSimpleName() + " t WHERE t.id = :id" + getEntityClass())
-                    .setParameter("id", id)
-                    .executeUpdate();
-//            Optional<T> optional = findById(id);
-//            optional.ifPresent(entityManager::remove);
-            commitTransaction();
+            if (existsById(id)) {
+                beginTransaction();
+                entityManager.createQuery("DELETE FROM "
+                                + getEntityClass().getSimpleName() +
+                                " t WHERE t.id = :id" + getEntityClass())
+                        .setParameter("id", id)
+                        .executeUpdate();
+                commitTransaction();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             rollBack();
@@ -79,7 +81,9 @@ public abstract class BaseEntityRepositoryImpl<T extends BaseEntity<ID>, ID exte
     @Override
     public boolean existsById(ID id) {
         TypedQuery<Long> query = entityManager.createQuery(
-                "select count(t) from " + getEntityClass().getSimpleName() + " t where t.id = :id", Long.class
+                "select count(t) from "
+                        + getEntityClass().getSimpleName() +
+                        " t where t.id = :id", Long.class
         );
         query.setParameter("id", id);
         return query.getSingleResult() > 0;
