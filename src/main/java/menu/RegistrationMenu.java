@@ -17,13 +17,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class RegistrationMenu {
+public class RegistrationMenu extends MainMenu{
 
     StudentService studentService = ApplicationContext.getStudentService();
     StudentSpouseService studentSpouseService = ApplicationContext.getStudentSpouseService();
-    CardService cardService = ApplicationContext.getCardService();
     Student student = new Student();
-    Card card = new Card();
+    MainMenu menu = new MainMenu();
     StudentSpouse studentSpouse;
     Scanner scanner = new Scanner(System.in);
 
@@ -109,7 +108,7 @@ public class RegistrationMenu {
         String fullAddress = scanner.next();
         student.setFullAddress(fullAddress);
 
-        addCardInfo();
+//        addCardInfo();
 
         studentService.saveOrUpdate(student);
         System.out.println("SUCCESSFULLY REGISTERED !\n");
@@ -132,61 +131,61 @@ public class RegistrationMenu {
         return password;
     }
 
-    private void addCardInfo() {
-
-        System.out.println("***PLEASE ENTER YOUR CARD INFORMATION : ***\n");
-
-        System.out.print("CARD NUMBER : ");
-        String cardNumber = scanner.next();
-        card.setCardNumber(cardNumber);
-
-        System.out.print("CVV2 : ");
-        int cvv2 = input();
-        card.setCvv2(cvv2);
-
-        System.out.print("EXPIRATION DATE (in this format yyyy-MM-dd) : ");
-        String expirationDate = scanner.next();
-        DateFormat cardFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            card.setExpirationDate(cardFormatter.parse(expirationDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            singUp();
-        }
-
-        chooseBankType();
-
-        card.setStudent(student);
-        cardService.saveOrUpdate(card);
-    }
-
-    private void chooseBankType() {
-        String bankText = """
-                ________________________________
-                                
-                PLEASE CHOOSE YOUR BANK :
-                1 - MELLI
-                2 - REFAH
-                3 - TEJARAT
-                4 - MASKAN
-                                
-                ________________________________
-                """;
-        System.out.println(bankText);
-        int bankInput = input();
-        BankType bankType = null;
-        switch (bankInput) {
-            case 1 -> bankType = BankType.MELLI;
-            case 2 -> bankType = BankType.REFAH;
-            case 3 -> bankType = BankType.TEJARAT;
-            case 4 -> bankType = BankType.MASKAN;
-            default -> {
-                System.out.println("INVALID INPUT ! ");
-                singUp();
-            }
-        }
-        card.setBank(bankType);
-    }
+//    private void addCardInfo() {
+//
+//        System.out.println("***PLEASE ENTER YOUR CARD INFORMATION : ***\n");
+//
+//        System.out.print("CARD NUMBER : ");
+//        String cardNumber = scanner.next();
+//        card.setCardNumber(cardNumber);
+//
+//        System.out.print("CVV2 : ");
+//        int cvv2 = menu.input();
+//        card.setCvv2(cvv2);
+//
+//        System.out.print("EXPIRATION DATE (in this format yyyy-MM-dd) : ");
+//        String expirationDate = scanner.next();
+//        DateFormat cardFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            card.setExpirationDate(cardFormatter.parse(expirationDate));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            singUp();
+//        }
+//
+//        chooseBankType();
+//
+//        card.setStudent(student);
+//        cardService.saveOrUpdate(card);
+//    }
+//
+//    private void chooseBankType() {
+//        String bankText = """
+//                ________________________________
+//
+//                PLEASE CHOOSE YOUR BANK :
+//                1 - MELLI
+//                2 - REFAH
+//                3 - TEJARAT
+//                4 - MASKAN
+//
+//                ________________________________
+//                """;
+//        System.out.println(bankText);
+//        int bankInput = menu.input();
+//        BankType bankType = null;
+//        switch (bankInput) {
+//            case 1 -> bankType = BankType.MELLI;
+//            case 2 -> bankType = BankType.REFAH;
+//            case 3 -> bankType = BankType.TEJARAT;
+//            case 4 -> bankType = BankType.MASKAN;
+//            default -> {
+//                System.out.println("INVALID INPUT ! ");
+//                singUp();
+//            }
+//        }
+//        card.setBank(bankType);
+//    }
 
     private void hasDormCheck() {
         String hasDormText = """
@@ -195,7 +194,7 @@ public class RegistrationMenu {
                 2 - NO
                 """;
         System.out.print(hasDormText);
-        int hasDormInput = input();
+        int hasDormInput = menu.input();
         switch (hasDormInput) {
             case 1 -> student.setHasDorm(true);
             case 2 -> student.setHasDorm(false);
@@ -215,7 +214,7 @@ public class RegistrationMenu {
                     2 - NO
                     """;
             System.out.print(isDaily);
-            int isDailyInput = input();
+            int isDailyInput = menu.input();
             switch (isDailyInput) {
                 case 1 -> student.setDaily(true);
                 case 2 -> student.setDaily(false);
@@ -245,7 +244,7 @@ public class RegistrationMenu {
                   ________________________________
                 """;
         System.out.println(universityTypeText);
-        int uniType = input();
+        int uniType = menu.input();
         UniversityType universityType = null;
         switch (uniType) {
 
@@ -292,7 +291,7 @@ public class RegistrationMenu {
                   ________________________________
                 """;
         System.out.println(academicLevelText);
-        int academicLevelInput = input();
+        int academicLevelInput = menu.input();
         AcademicLevel academicLevel = null;
         switch (academicLevelInput) {
 
@@ -327,7 +326,7 @@ public class RegistrationMenu {
                 2 - NO
                 """;
         System.out.print(isMarriedText);
-        int isMarriedInput = input();
+        int isMarriedInput = menu.input();
         switch (isMarriedInput) {
             case 1 -> {
                 student.setMarried(true);
@@ -382,27 +381,13 @@ public class RegistrationMenu {
                 2 - NO
                 """;
         System.out.println(isStudentText);
-        int isStudentInput = input();
+        int isStudentInput = menu.input();
         switch (isStudentInput) {
             case 1 -> studentSpouse.setIsStudent(true);
             case 2 -> studentSpouse.setIsStudent(false);
             default -> {
                 System.out.println("INVALID INPUT ! ");
                 singUp();
-            }
-        }
-    }
-
-    public Integer input() {
-        int input;
-        while (true) {
-            try {
-                input = scanner.nextInt();
-                scanner.nextLine();
-                return input;
-            } catch (InputMismatchException in) {
-                scanner.nextLine();
-                System.out.println("PLEASE ENTER VALID NUMBER !");
             }
         }
     }

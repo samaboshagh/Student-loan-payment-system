@@ -1,14 +1,20 @@
 package menu;
 
+import menu.loanRegistration.LoanRegistrationMenu;
+import utility.SecurityContext;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainMenu {
 
-   public static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
     String userName;
     String passWord;
+    String today;
 
     public void start() {
         while (true) {
@@ -17,7 +23,8 @@ public class MainMenu {
                     1- SING UP
                     2- LOAN REGISTRATION
                     3- LOAN REPAYMENT
-                    4- EXIT
+                    4- STUDENT PANEL
+                    5- EXIT
                     """;
             System.out.println(text);
             int input = input();
@@ -26,15 +33,16 @@ public class MainMenu {
 
                 case 2 -> {
                     login();
-                    new LoanRegistrationMenu(userName, passWord);
+                    new LoanRegistrationMenu(userName, passWord, today);
                 }
 
                 case 3 -> {
                     login();
                     new LoanRepaymentMenu(userName, passWord);
                 }
+                case 4 -> new StudentPanel();
 
-                case 4 -> System.exit(-1);
+                case 5 -> System.exit(-1);
 
                 default -> {
                     System.out.println("INVALID INPUT !\n");
@@ -50,7 +58,15 @@ public class MainMenu {
         this.userName = scanner.next();
         System.out.println("PLEASE ENTER YOUR PASSWORD : ");
         this.passWord = scanner.next();
-
+        System.out.println("Enter Current Date:(yyyy-MM-dd)");
+        this.today = scanner.next();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            LocalDate localDate = LocalDate.parse(today, formatter);
+            SecurityContext.fillContext(localDate);
+        } catch (java.time.format.DateTimeParseException e) {
+            System.out.println("Invalid date format. Please enter the date in the format yyyy-MM-dd.");
+        }
     }
 
     public Integer input() {

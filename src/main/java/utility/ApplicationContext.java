@@ -3,13 +3,12 @@ package utility;
 import lombok.Getter;
 import repository.*;
 import repository.impl.*;
-import repository.impl.loanCategoryImpl.LoanCategoryRepositoryImpl;
-import repository.loanCategoryRepository.LoanCategoryRepository;
 import service.*;
 import service.impl.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+
 @SuppressWarnings("unused")
 public class ApplicationContext {
 
@@ -21,14 +20,20 @@ public class ApplicationContext {
 
     private static CardRepository cardRepository;
     private static InstallmentRepository installmentRepository;
-//    private static LoanCategoryRepository loanCategoryRepository;
-//    private static LoanRepository loanRepository;
+
+    private static LoanRepository loanRepository;
+
+    private static LoanCategoryRepository loanCategoryRepository;
+
     private static StudentRepository studentRepository;
     private static StudentSpouseRepository studentSpouseRepository;
     private static CardService cardService;
     private static InstallmentService installmentService;
-//    private static LoanCategoryService loanCategoryService;
-//    private static LoanService loanService;
+
+    private static LoanService loanService;
+
+    private static LoanCategoryService loanCategoryService;
+
     private static StudentService studentService;
     private static StudentSpouseService studentSpouseService;
 
@@ -46,20 +51,20 @@ public class ApplicationContext {
         return installmentRepository;
     }
 
-//    public static LoanCategoryRepository getLoanCategoryRepository() {
-//        if (loanCategoryRepository == null) {
-//            loanCategoryRepository = new LoanCategoryRepositoryImpl(entityManager);
-//        }
-//        return loanCategoryRepository;
-//    }
+    public static LoanRepository getLoanRepository() {
+        if (loanRepository == null) {
+            loanRepository = new LoanRepositoryImpl(entityManager);
+        }
+        return loanRepository;
+    }
 
-//    public static LoanRepository getLoanRepository() {
-//        if (loanRepository == null) {
-//            loanRepository = new LoanRepositoryImpl(entityManager) {
-//            };
-//        }
-//        return loanRepository;
-//    }
+    public static LoanCategoryRepository getLoanCategoryRepository() {
+        if (loanCategoryRepository == null){
+            loanCategoryRepository = new LoanCategoryRepositoryImpl(entityManager) ;
+
+        }
+        return loanCategoryRepository;
+    }
 
     public static StudentRepository getStudentRepository() {
         if (studentRepository == null) {
@@ -84,6 +89,25 @@ public class ApplicationContext {
         return cardService;
     }
 
+
+    public static LoanService getLoanService() {
+        if (loanService == null) {
+            loanService = new LoanServiceImpl(
+                    getLoanRepository()
+            );
+        }
+        return loanService;
+    }
+
+    public static LoanCategoryService getLoanCategoryService() {
+        if (loanCategoryService == null) {
+            loanCategoryService= new LoanCategoryServiceImpl(
+                    getLoanCategoryRepository()
+            );
+        }
+        return loanCategoryService;
+    }
+
     public static InstallmentService getInstallmentService() {
         if (installmentService == null) {
             installmentService = new InstallmentServiceImpl(
@@ -92,24 +116,6 @@ public class ApplicationContext {
         }
         return installmentService;
     }
-
-//    public static LoanCategoryService getLoanCategoryService() {
-//        if (loanCategoryService == null) {
-//            loanCategoryService = new LoanCategoryServiceImpl(
-//                    getLoanCategoryRepository()
-//            );
-//        }
-//        return loanCategoryService;
-//    }
-
-//    public static LoanService getLoanService() {
-//        if (loanService == null) {
-//            loanService = new LoanServiceImpl(
-//                    getLoanRepository()
-//            );
-//        }
-//        return loanService;
-//    }
 
     public static StudentService getStudentService() {
         if (studentService == null) {

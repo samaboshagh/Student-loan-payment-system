@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+//@ToString
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Person extends BaseEntity<Integer> {

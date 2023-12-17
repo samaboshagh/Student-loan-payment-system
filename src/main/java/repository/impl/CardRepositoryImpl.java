@@ -6,7 +6,9 @@ import repository.CardRepository;
 
 import javax.persistence.EntityManager;
 @SuppressWarnings("unused")
-public class CardRepositoryImpl extends BaseEntityRepositoryImpl<Card,Integer> implements CardRepository {
+public class CardRepositoryImpl
+        extends BaseEntityRepositoryImpl<Card,Integer>
+        implements CardRepository {
     public CardRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }

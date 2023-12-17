@@ -1,7 +1,6 @@
 package entity;
 
 import base.entity.BaseEntity;
-import entity.loanCategory.HousingDepositLoanCategory;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -24,7 +23,5 @@ public class City extends BaseEntity<Integer> {
     @Column(name = "is_big_city", columnDefinition = "boolean default false")
     private boolean isBigCity;
 
-    @ManyToOne
-    private HousingDepositLoanCategory housingDepositLoanCategory;
 
 }

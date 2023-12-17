@@ -1,9 +1,10 @@
-package entity.loanCategory;
+package entity;
 
 import base.entity.BaseEntity;
 import entity.enumeration.AcademicLevel;
+import entity.enumeration.LoanType;
 import entity.enumeration.PaymentType;
-import entity.loan.Loan;
+import entity.Loan;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,9 +16,11 @@ import java.util.List;
 @Setter
 @ToString
 @Table(name = "loan_category")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 public class LoanCategory extends BaseEntity<Integer> {
+
+    @Enumerated(EnumType.STRING )
+    private LoanType loanType;
 
     private Double amount;
 

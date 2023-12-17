@@ -1,8 +1,17 @@
 package service;
 
 import base.service.BaseEntityService;
-import entity.loan.Loan;
+import entity.Loan;
+import entity.person.Student;
 
 @SuppressWarnings("unused")
-public interface LoanService<T extends Loan> extends BaseEntityService<T, Integer> {
+public interface LoanService extends BaseEntityService<Loan, Integer> {
+    boolean studentHasActiveLoanForEducationalLoan(Student student);
+
+    boolean housingDepositLoanRegistration(Student student);
+
+    boolean tuitionLoanRegistration(Student student);
+
+    void setLoanCategoryForEducationalLoan(Student student);
+
 }

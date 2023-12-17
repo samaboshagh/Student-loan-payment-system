@@ -1,15 +1,14 @@
 package service;
 
 import base.service.BaseEntityService;
-import entity.loanCategory.LoanCategory;
-import entity.person.Student;
+import entity.LoanCategory;
 
 @SuppressWarnings("unused")
-public interface LoanCategoryService<T extends LoanCategory> extends BaseEntityService<T,Integer> {
+public interface LoanCategoryService extends BaseEntityService<LoanCategory, Integer> {
 
-    boolean isStudentQualifiedForEducationalLoan(Student student);
-
-    boolean isStudentQualifiedForTuitionLoan(Student student);
+//    boolean isStudentQualifiedForEducationalLoan(Student student);
+//
+//    boolean isStudentQualifiedForTuitionLoan(Student student);
 
     Double academicLevelAndTheirLoanAmount();
 

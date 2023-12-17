@@ -8,6 +8,6 @@ public interface PersonService<T extends Person> extends BaseEntityService<T, In
 
     T findByUserName(String userName);
 
-    boolean existByUserNameAndPassword(String userName , String password);
+    boolean existByUserNameAndPassword(String username , String password);
 
 }

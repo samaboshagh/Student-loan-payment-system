@@ -3,11 +3,12 @@ package entity.person;
 import entity.Card;
 import entity.enumeration.AcademicLevel;
 import entity.enumeration.UniversityType;
-import entity.loan.Loan;
+import entity.Loan;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -15,14 +16,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+//@ToString
 @Entity
 public class Student extends Person {
 
     @Column(name = "student_number")
     private String studentNumber;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String username;
 
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$" , message = "INVALID PASSWORD")
@@ -64,6 +65,6 @@ public class Student extends Person {
     private Set<Card> cards;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Loan> loans;
+    private List<Loan> loans = new ArrayList<>();
 
 }

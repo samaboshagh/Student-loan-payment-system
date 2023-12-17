@@ -1,18 +1,27 @@
 package utility;
 
-import entity.person.Person;
+import entity.person.Student;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.util.Date;
+
+@SuppressWarnings("unused")
 public class SecurityContext {
 
     private SecurityContext() {
     }
 
     @Getter
-    private static Person currentUser;
+    private static Student currentUser;
+    @Getter
+    private static LocalDate todayDate;
 
-    public static void fillContext(Person baseUser) {
+    public static void fillContext(Student baseUser) {
         currentUser = baseUser;
+    }
+    public static void fillContext(LocalDate today) {
+        todayDate = today;
     }
 
     public static void logout() {
@@ -26,7 +35,5 @@ public class SecurityContext {
     public static Integer getCurrentUserId() {
         return currentUser.getId();
     }
-
-
 
 }

@@ -7,6 +7,6 @@ public interface PersonRepository<T extends Person> extends BaseEntityRepository
 
     T findByUserName(String userName);
 
-    boolean existByUserNameAndPassword(String userName , String password);
+    boolean existByUserNameAndPassword(String username , String password);
 
 }

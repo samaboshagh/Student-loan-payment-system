@@ -1,12 +1,10 @@
 package entity;
 
 import base.entity.BaseEntity;
-import entity.loan.Loan;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -23,10 +21,10 @@ public class Installment extends BaseEntity<Integer> {
     private Double amount;
 
     @Column(name = "due_date")
-    private Date dueDate;
+    private LocalDate dueDate;
 
     @Column(name = "payment_date")
-    private Date paymentDate;
+    private LocalDate paymentDate;
 
     @Column(name = "is_paid" , columnDefinition = "boolean default false")
     private boolean isPaid;

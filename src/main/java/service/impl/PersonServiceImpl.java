@@ -20,7 +20,7 @@ public class PersonServiceImpl<T extends Person, R extends PersonRepository<T>>
     }
 
     @Override
-    public boolean existByUserNameAndPassword(String userName, String password) {
-        return repository.existByUserNameAndPassword(userName, password);
+    public boolean existByUserNameAndPassword(String username, String password) {
+        return repository.existByUserNameAndPassword(username, password);
     }
 }

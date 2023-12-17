@@ -1,13 +1,12 @@
-package entity.loan;
+package entity;
 
 import base.entity.BaseEntity;
-import entity.Installment;
-import entity.loanCategory.LoanCategory;
 import entity.person.Student;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,10 +15,9 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Loan extends BaseEntity<Integer> {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @Enumerated(EnumType.STRING )
     private LoanCategory loanCategory;
 
@@ -28,7 +26,10 @@ public class Loan extends BaseEntity<Integer> {
 
     private LocalDate creationDate;
 
-    @ManyToOne
+    @Column(name = "rental_number")
+    private String rentalNumber;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Student student;
 
 }

@@ -13,14 +13,14 @@ public abstract class PersonRepositoryImpl<T extends Person> extends BaseEntityR
     }
 
     @Override
-    public T findByUserName(String userName) {
+    public T findByUserName(String username) {
 
         try {
             return entityManager.createQuery(
                             "SELECT u FROM "
                                     + getEntityClass().getSimpleName() +
-                                    " u WHERE u.userName = :userName", getEntityClass())
-                    .setParameter("userName", userName)
+                                    " u WHERE u.username = :username", getEntityClass())
+                    .setParameter("username", username)
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -30,14 +30,14 @@ public abstract class PersonRepositoryImpl<T extends Person> extends BaseEntityR
     }
 
     @Override
-    public boolean existByUserNameAndPassword(String userName, String password) {
+    public boolean existByUserNameAndPassword(String username, String password) {
 
         try {
             return entityManager.createQuery(
-                            "SELECT COUNT(u.userName) FROM "
+                            "SELECT COUNT(u.username) FROM "
                                     + getEntityClass().getSimpleName() +
-                                    " u WHERE u.userName = :userName AND u.password = :password", Long.class)
-                    .setParameter("userName", userName)
+                                    " u WHERE u.username = :username AND u.password = :password", Long.class)
+                    .setParameter("username", username)
                     .setParameter("password", password)
                     .getSingleResult() > 0;
 
