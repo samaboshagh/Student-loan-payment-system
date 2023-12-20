@@ -20,5 +20,6 @@ public class PaidInstallments {
                         .map(Object::toString)
                         .collect(Collectors.joining(" ")))
                 .forEach(System.out::println);
+        new LoanRepaymentMenu().installmentMenu();
     }
 }

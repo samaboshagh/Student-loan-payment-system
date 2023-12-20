@@ -13,6 +13,7 @@ import utility.SecurityContext;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class InstallmentServiceImpl
@@ -76,10 +77,12 @@ public class InstallmentServiceImpl
 
     @Override
     public void changeIsPaidState(Installment installment) {
-
-        LocalDate repaymentDate = SecurityContext.getTodayDate();
-        installment.setPaymentDate(repaymentDate);
-        installment.setPaid(true);
-        saveOrUpdate(installment);
+        Optional.ofNullable(installment)
+                .ifPresent(inst -> Optional.ofNullable(SecurityContext.getTodayDate())
+                        .ifPresent(repaymentDate -> {
+                            inst.setPaymentDate(repaymentDate);
+                            inst.setPaid(true);
+                            saveOrUpdate(inst);
+                        }));
     }
 }

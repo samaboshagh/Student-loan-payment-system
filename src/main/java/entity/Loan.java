@@ -34,7 +34,7 @@ public class Loan extends BaseEntity<Integer> {
     @Override
     public String toString() {
         return "Loan{" +
-                "id              = " + getId() +
+                "id  = " + getId() +
                 " ,loanCategory  = " + loanCategory +
                 ", creationDate  = " + creationDate +
                 ", student       = " + student +

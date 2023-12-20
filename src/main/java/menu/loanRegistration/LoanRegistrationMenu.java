@@ -13,11 +13,13 @@ import service.LoanService;
 import service.StudentService;
 import utility.ApplicationContext;
 import utility.SecurityContext;
+import utility.Validation;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Scanner;
 
@@ -58,7 +60,7 @@ public class LoanRegistrationMenu {
         Student student = SecurityContext.getCurrentUser();
         LocalDate date = SecurityContext.getTodayDate();
 
-        if (!studentService.isStudentGraduated(student, date)) {
+        if (!studentService.isStudentGraduated(student, date) && isRightTime()) {
             String text = """
                     *** WHICH TYPE OF LOAN DO YOU WANT REGISTER TO : ***
                     1 - EDUCATIONAL LOAN
@@ -84,7 +86,7 @@ public class LoanRegistrationMenu {
                 }
             }
         } else {
-            System.out.println(" YOU GRADUATED ! \n");
+            System.out.println(" YOU ARE NOT ALLOWED TO ENTER ! \n");
             menu.start();
         }
     }
@@ -94,12 +96,26 @@ public class LoanRegistrationMenu {
         System.out.println("***PLEASE ENTER YOUR CARD INFORMATION : ***\n");
 
         System.out.print("CARD NUMBER : ");
-        String cardNumber = scanner.next();
-        card.setCardNumber(cardNumber);
+        boolean isValidCardNumber = true;
+        while (isValidCardNumber) {
+            String cardNumber = scanner.next();
+            if (Validation.cardValidation(cardNumber)) {
+                card.setCardNumber(cardNumber);
+                isValidCardNumber = false;
+            } else System.out.println(" PLEASE ENTER VALID CARD NUMBER !");
+        }
+
 
         System.out.print("CVV2 : ");
-        int cvv2 = menu.input();
-        card.setCvv2(cvv2);
+        boolean isValidCvv = true;
+        while (isValidCvv) {
+            int cvv2 = menu.input();
+            if (Validation.isValidCvv2(cvv2)) {
+                card.setCvv2(cvv2);
+                isValidCvv = false;
+            } else System.out.println(" PLEASE ENTER VALID CVV !");
+        }
+
 
         System.out.print("EXPIRATION DATE (in this format yyyy-MM-dd) : ");
         String expirationDate = scanner.next();
@@ -156,5 +172,14 @@ public class LoanRegistrationMenu {
         }
         if (loan.getStudent() != null)
             System.out.println("SUCCESSFULLY REGISTERED \n");
+    }
+
+    public boolean isRightTime() {
+        if (SecurityContext.getTodayDate().getMonth().equals(Month.AUGUST) && SecurityContext.getTodayDate().getDayOfMonth() <= 7) {
+            return true;
+        } else if (SecurityContext.getTodayDate().getMonth().equals(Month.NOVEMBER) && SecurityContext.getTodayDate().getDayOfMonth() >= 25) {
+            return true;
+        } else
+            return SecurityContext.getTodayDate().getMonth().equals(Month.DECEMBER) && SecurityContext.getTodayDate().getDayOfMonth() < 2;
     }
 }

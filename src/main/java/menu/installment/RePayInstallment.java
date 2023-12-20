@@ -10,15 +10,18 @@ import service.InstallmentService;
 import service.LoanService;
 import utility.ApplicationContext;
 import utility.SecurityContext;
+import utility.Validation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 import java.util.Scanner;
+
 @SuppressWarnings("unused")
 public class RePayInstallment {
 
     InstallmentService installmentService = ApplicationContext.getInstallmentService();
-    LoanService loanService =ApplicationContext.getLoanService();
+    LoanService loanService = ApplicationContext.getLoanService();
     CardService cardService = ApplicationContext.getCardService();
     Scanner scanner = new Scanner(System.in);
     Student student = SecurityContext.getCurrentUser();
@@ -33,10 +36,15 @@ public class RePayInstallment {
         new UnpaidInstallments().seeUnpaidInstallments();
         System.out.print("PLEASE ENTER THE LOAN NUMBER THAT YOU WANT TO PAY : ");
         Integer loanNumber = scanner.nextInt();
-        Installment installment = installmentService.findByLoanNumber(loanNumber,loan);
-        installmentService.changeIsPaidState(installment);
-        addCardInfo();
-        System.out.println(" SUCCESSFULLY REPAID :) ");
+        Optional<Installment> optionalInstallment = Optional.ofNullable(installmentService.findByLoanNumber(loanNumber, loan));
+        if (optionalInstallment.isPresent()) {
+            Installment installment = optionalInstallment.get();
+            installmentService.changeIsPaidState(installment);
+            addCardInfo();
+            System.out.println(" SUCCESSFULLY REPAID :) \n");
+        } else {
+            System.out.println(" INVALID ID. PLEASE TRY AGAIN  ! \n");
+        }
     }
 
     public void addCardInfo() {
@@ -45,17 +53,23 @@ public class RePayInstallment {
 
         System.out.print("CARD NUMBER : ");
         String cardNumber = scanner.next();
-        if (cardService.isSameCard(student,cardNumber)) {
+        if (cardService.isSameCard(student, cardNumber)) {
 
             System.out.print("CVV2 : ");
-            int cvv2 = menu.input();
+            boolean isValidCvv = true;
+            while (isValidCvv) {
+                int cvv2 = menu.input();
+                if (Validation.isValidCvv2(cvv2)) {
+                    isValidCvv = false;
+                } else System.out.println(" PLEASE ENTER VALID CVV !");
+            }
 
             System.out.print("EXPIRATION DATE (in this format yyyy-MM-dd) : ");
             String expirationDate = scanner.next();
             DateFormat dareFormatter = new SimpleDateFormat("yyyy-MM-dd");
             chooseBankType();
 
-        }else{
+        } else {
             System.out.println("UNMATCHED CARD INFO");
             repayment();
         }

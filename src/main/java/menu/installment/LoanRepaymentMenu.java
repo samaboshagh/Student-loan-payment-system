@@ -1,13 +1,14 @@
 package menu.installment;
 
 import entity.person.Student;
+import lombok.NoArgsConstructor;
 import menu.MainMenu;
 import service.StudentService;
 import utility.ApplicationContext;
 import utility.SecurityContext;
 
 import java.time.LocalDate;
-
+@NoArgsConstructor
 public class LoanRepaymentMenu extends MainMenu {
 
     StudentService studentService = ApplicationContext.getStudentService();
@@ -43,7 +44,8 @@ public class LoanRepaymentMenu extends MainMenu {
         if (studentService.isStudentGraduated(student, localDate)) {
 
             String installmentMenuText = """
-                    ***                       ***
+                    
+                    ***       STUDENT PANEL       ***
                                         
                     1- SEE PAID INSTALLMENT
                     2- SEE UNPAID INSTALLMENT

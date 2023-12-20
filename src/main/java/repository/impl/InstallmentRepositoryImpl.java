@@ -45,7 +45,7 @@ public class InstallmentRepositoryImpl extends BaseEntityRepositoryImpl<Installm
     public List<Object[]> unpaidInstallments(Student student) {
         try {
             List<Object[]> results = entityManager.createQuery("""
-                            SELECT i.loanNumber , i.dueDate FROM Installment i
+                            SELECT i.loanNumber , i.dueDate , i.amount FROM Installment i
                             WHERE i.isPaid IS false AND i.loan.student = :student
                             """, Object[].class)
                     .setParameter("student", student)
@@ -74,13 +74,3 @@ public class InstallmentRepositoryImpl extends BaseEntityRepositoryImpl<Installm
         }
     }
 }
-//List<Object[]> results = entityManager.createQuery("""
-//                            SELECT i.loanNumber , i.dueDate , i.amount FROM Installment i
-//                            WHERE i.isPaid = false AND i.loan.student = :student
-//                            """, Object[].class)
-//                    .setParameter("student", student)
-//                    .getResultList();
-//            for (Object[] result : results) {
-//                int numberOfInstallment = (int) result[0];
-//                Date dueDate = (Date) result[1];
-//            }

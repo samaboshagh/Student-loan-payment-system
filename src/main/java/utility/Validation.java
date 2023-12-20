@@ -38,9 +38,7 @@ public class Validation {
         return matcher.matches();
     }
 
-    public static boolean cvv2Validation(String cvv2) {
-        Pattern regex = Pattern.compile("\\d{3}");
-        Matcher matcher = regex.matcher(String.valueOf(cvv2));
-        return matcher.matches();
+    public static boolean isValidCvv2(int cvv2) {
+        return cvv2 > 99 && cvv2 <= 9999;
     }
 }
