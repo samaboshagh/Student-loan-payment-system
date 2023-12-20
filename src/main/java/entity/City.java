@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +21,5 @@ public class City extends BaseEntity<Integer> {
 
     @Column(name = "is_big_city", columnDefinition = "boolean default false")
     private boolean isBigCity;
-
 
 }

@@ -4,14 +4,18 @@ import base.service.BaseEntityService;
 import entity.Loan;
 import entity.person.Student;
 
-@SuppressWarnings("unused")
+import java.util.List;
+
 public interface LoanService extends BaseEntityService<Loan, Integer> {
-    boolean studentHasActiveLoanForEducationalLoan(Student student);
+
+    boolean studentHasActiveEducationalLoan(Student student);
+
+    boolean studentHasActiveTuitionLoan(Student student);
 
     boolean housingDepositLoanRegistration(Student student);
 
-    boolean tuitionLoanRegistration(Student student);
+    Loan findByNationalCodeLoanHousing(String nationalCode);
 
-    void setLoanCategoryForEducationalLoan(Student student);
+    List<Loan> findByStudent(Student student);
 
 }

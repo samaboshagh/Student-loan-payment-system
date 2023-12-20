@@ -14,7 +14,6 @@ public abstract class PersonRepositoryImpl<T extends Person> extends BaseEntityR
 
     @Override
     public T findByUserName(String username) {
-
         try {
             return entityManager.createQuery(
                             "SELECT u FROM "
@@ -26,12 +25,10 @@ public abstract class PersonRepositoryImpl<T extends Person> extends BaseEntityR
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override
     public boolean existByUserNameAndPassword(String username, String password) {
-
         try {
             return entityManager.createQuery(
                             "SELECT COUNT(u.username) FROM "

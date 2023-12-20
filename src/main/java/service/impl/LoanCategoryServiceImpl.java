@@ -2,6 +2,7 @@ package service.impl;
 
 import base.service.impl.BaseEntityServiceImpl;
 import entity.LoanCategory;
+import entity.person.Student;
 import repository.LoanCategoryRepository;
 import service.LoanCategoryService;
 
@@ -14,23 +15,18 @@ public class LoanCategoryServiceImpl
         super(repository);
     }
 
-    @Override
-    public Double academicLevelAndTheirLoanAmount() {
-        return null;
+
+    public LoanCategory findLoanCategoryForEducationLoan(Student student) {
+        return repository.findLoanCategoryForEducationLoan(student);
     }
 
-//    @Override
-//    public boolean isStudentQualifiedForEducationalLoan(Student student) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isStudentQualifiedForTuitionLoan(Student student) {
-//        return false;
-//    }
+    @Override
+    public LoanCategory findLoanCategoryForTuitionLoan(Student student) {
+        return repository.findLoanCategoryForTuitionLoan(student);
+    }
 
-//    @Override
-//    public Double academicLevelAndTheirLoanAmount() {
-//        return null;
-//    }
+    @Override
+    public LoanCategory findLoanCategoryForHousingDepositLoan(Student student) {
+        return repository.findLoanCategoryForHousingDepositLoan(student);
+    }
 }

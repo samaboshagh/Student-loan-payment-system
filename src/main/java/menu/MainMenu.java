@@ -1,9 +1,11 @@
 package menu;
 
+import menu.installment.LoanRepaymentMenu;
 import menu.loanRegistration.LoanRegistrationMenu;
 import utility.SecurityContext;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -33,14 +35,23 @@ public class MainMenu {
 
                 case 2 -> {
                     login();
-                    new LoanRegistrationMenu(userName, passWord, today);
+                    if (isRightTime()) {
+                        new LoanRegistrationMenu(userName, passWord, today);
+                    } else {
+                        System.out.println("ITS NOT REGISTRATION TIME");
+                        start();
+                    }
                 }
 
                 case 3 -> {
                     login();
-                    new LoanRepaymentMenu(userName, passWord);
+                    new LoanRepaymentMenu(userName, passWord, today);
                 }
-                case 4 -> new StudentPanel();
+
+                case 4 -> {
+                    login();
+                    new StudentPanel();
+                }
 
                 case 5 -> System.exit(-1);
 
@@ -67,6 +78,16 @@ public class MainMenu {
         } catch (java.time.format.DateTimeParseException e) {
             System.out.println("Invalid date format. Please enter the date in the format yyyy-MM-dd.");
         }
+    }
+
+    public boolean isRightTime() {
+
+        if (SecurityContext.getTodayDate().getMonth().equals(Month.AUGUST) && SecurityContext.getTodayDate().getDayOfMonth() <= 7) {
+            return true;
+        } else if (SecurityContext.getTodayDate().getMonth().equals(Month.NOVEMBER) && SecurityContext.getTodayDate().getDayOfMonth() >= 25) {
+            return true;
+        } else
+            return SecurityContext.getTodayDate().getMonth().equals(Month.DECEMBER) && SecurityContext.getTodayDate().getDayOfMonth() < 2;
     }
 
     public Integer input() {

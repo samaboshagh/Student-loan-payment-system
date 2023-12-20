@@ -1,19 +1,21 @@
 package menu.loanRegistration;
 
-import entity.Card;
 import entity.Loan;
+import entity.LoanCategory;
 import entity.person.Student;
 
-import menu.MainMenu;
+import service.InstallmentService;
+import service.LoanCategoryService;
 import service.LoanService;
 import utility.ApplicationContext;
 import utility.SecurityContext;
 
 import java.time.LocalDate;
 
-@SuppressWarnings("unused")
 public class EducationalLoanMenu {
     LoanService loanService = ApplicationContext.getLoanService();
+    LoanCategoryService loanCategoryService = ApplicationContext.getLoanCategoryService();
+    InstallmentService installmentService = ApplicationContext.getInstallmentService();
 
     public void educationalLoanRegistration() {
 
@@ -21,16 +23,14 @@ public class EducationalLoanMenu {
         LocalDate todayDate = SecurityContext.getTodayDate();
         Loan loan = new Loan();
         loan.setCreationDate(todayDate);
-        loanService.setLoanCategoryForEducationalLoan(currentUser);
-//        if (loanService.studentHasActiveLoanForEducationalLoan(currentUser)) {
-            Card card = LoanRegistrationMenu.addCardInfo();
-            loan.setStudent(currentUser);
-            loanService.saveOrUpdate(loan);
-            if (loan.getStudent() != null) {
-                System.out.println("SUCCESSFULLY REGISTERED \n");
+        LoanCategory category = loanCategoryService.findLoanCategoryForEducationLoan(currentUser);
+        loan.setLoanCategory(category);
+        if (!loanService.studentHasActiveEducationalLoan(currentUser)) {
+            LoanRegistrationMenu.tuitionAndEducationLoanRegistration(currentUser, loan, loanService, installmentService);
 
-            } else
-                System.out.println("PLEASE TRY AGAIN");
-//        } else new MainMenu().start();
+        } else {
+            System.out.println("YOU ALREADY HAVE ACTIVE LOAN ! \n");
+            new LoanRegistrationMenu().chooseLoanType();
+        }
     }
 }

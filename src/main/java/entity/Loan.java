@@ -6,14 +6,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 public class Loan extends BaseEntity<Integer> {
 
@@ -32,4 +30,14 @@ public class Loan extends BaseEntity<Integer> {
     @ManyToOne(cascade = CascadeType.ALL)
     private Student student;
 
+
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "id              = " + getId() +
+                " ,loanCategory  = " + loanCategory +
+                ", creationDate  = " + creationDate +
+                ", student       = " + student +
+                '}';
+    }
 }

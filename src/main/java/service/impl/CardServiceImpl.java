@@ -2,8 +2,10 @@ package service.impl;
 
 import base.service.impl.BaseEntityServiceImpl;
 import entity.Card;
+import entity.person.Student;
 import repository.CardRepository;
 import service.CardService;
+
 
 @SuppressWarnings("unused")
 public class CardServiceImpl
@@ -12,5 +14,10 @@ public class CardServiceImpl
 
     public CardServiceImpl(CardRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public Boolean isSameCard(Student student, String cardNumber) {
+        return repository.isSameCard(student, cardNumber);
     }
 }

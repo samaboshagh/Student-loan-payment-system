@@ -1,6 +1,7 @@
 package entity.person;
 
 import entity.Card;
+import entity.City;
 import entity.enumeration.AcademicLevel;
 import entity.enumeration.UniversityType;
 import entity.Loan;
@@ -26,7 +27,6 @@ public class Student extends Person {
     @Column(unique = true)
     private String username;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$" , message = "INVALID PASSWORD")
     private String password;
 
     @Column(name = "university_name")
@@ -47,8 +47,7 @@ public class Student extends Person {
     private boolean hasDorm;
 
     @Column(name = "entering_year")
-    @Pattern(regexp = "^[0-9]{4}$")
-    private String enteringYear;
+    private Integer enteringYear;
 
     @Column(name = "is_married", columnDefinition = "boolean default false")
     private boolean isMarried;
@@ -56,7 +55,8 @@ public class Student extends Person {
     @OneToOne(cascade = CascadeType.ALL)
     private StudentSpouse spouse;
 
-    private String city;
+    @OneToOne(cascade = CascadeType.ALL)
+    private City city;
 
     @Column(name = "full_address")
     private String fullAddress;

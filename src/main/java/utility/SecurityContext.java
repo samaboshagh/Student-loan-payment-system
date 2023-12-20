@@ -1,10 +1,10 @@
 package utility;
 
+import entity.Loan;
 import entity.person.Student;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @SuppressWarnings("unused")
 public class SecurityContext {
@@ -16,6 +16,8 @@ public class SecurityContext {
     private static Student currentUser;
     @Getter
     private static LocalDate todayDate;
+    @Getter
+    private static Loan thisLoan;
 
     public static void fillContext(Student baseUser) {
         currentUser = baseUser;
@@ -23,13 +25,12 @@ public class SecurityContext {
     public static void fillContext(LocalDate today) {
         todayDate = today;
     }
+    public static void fillContext(Loan loan) {
+        thisLoan = loan;
+    }
 
     public static void logout() {
         currentUser = null;
-    }
-
-    public static boolean isAnyoneAuthenticated() {
-        return currentUser != null;
     }
 
     public static Integer getCurrentUserId() {

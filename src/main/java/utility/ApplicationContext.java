@@ -19,21 +19,18 @@ public class ApplicationContext {
             ).createEntityManager();
 
     private static CardRepository cardRepository;
+    private static CityRepository cityRepository;
     private static InstallmentRepository installmentRepository;
-
     private static LoanRepository loanRepository;
-
     private static LoanCategoryRepository loanCategoryRepository;
-
     private static StudentRepository studentRepository;
     private static StudentSpouseRepository studentSpouseRepository;
+
     private static CardService cardService;
+    private static CityService cityService;
     private static InstallmentService installmentService;
-
     private static LoanService loanService;
-
     private static LoanCategoryService loanCategoryService;
-
     private static StudentService studentService;
     private static StudentSpouseService studentSpouseService;
 
@@ -42,6 +39,13 @@ public class ApplicationContext {
             cardRepository = new CardRepositoryImpl(entityManager);
         }
         return cardRepository;
+    }
+
+    public static CityRepository getCityRepository() {
+        if (cityRepository == null) {
+            cityRepository = new CityRepositoryImpl(entityManager);
+        }
+        return cityRepository;
     }
 
     public static InstallmentRepository getInstallmentRepository() {
@@ -59,8 +63,8 @@ public class ApplicationContext {
     }
 
     public static LoanCategoryRepository getLoanCategoryRepository() {
-        if (loanCategoryRepository == null){
-            loanCategoryRepository = new LoanCategoryRepositoryImpl(entityManager) ;
+        if (loanCategoryRepository == null) {
+            loanCategoryRepository = new LoanCategoryRepositoryImpl(entityManager);
 
         }
         return loanCategoryRepository;
@@ -80,6 +84,7 @@ public class ApplicationContext {
         return studentSpouseRepository;
     }
 
+
     public static CardService getCardService() {
         if (cardService == null) {
             cardService = new CardServiceImpl(
@@ -89,6 +94,14 @@ public class ApplicationContext {
         return cardService;
     }
 
+    public static CityService getCityService() {
+        if (cityService == null){
+           cityService = new CityServiceImpl(
+                   getCityRepository()
+           );
+        }
+        return cityService;
+    }
 
     public static LoanService getLoanService() {
         if (loanService == null) {
@@ -101,7 +114,7 @@ public class ApplicationContext {
 
     public static LoanCategoryService getLoanCategoryService() {
         if (loanCategoryService == null) {
-            loanCategoryService= new LoanCategoryServiceImpl(
+            loanCategoryService = new LoanCategoryServiceImpl(
                     getLoanCategoryRepository()
             );
         }

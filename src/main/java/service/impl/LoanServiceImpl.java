@@ -5,11 +5,12 @@ import entity.Loan;
 import entity.enumeration.LoanType;
 import entity.person.Student;
 import repository.LoanRepository;
+import service.LoanCategoryService;
 import service.LoanService;
+import utility.ApplicationContext;
 import utility.SecurityContext;
 
 import java.util.List;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class LoanServiceImpl
@@ -20,48 +21,78 @@ public class LoanServiceImpl
         super(repository);
     }
 
+    LoanCategoryService loanCategoryService = ApplicationContext.getLoanCategoryService();
 
-    public boolean studentHasActiveLoanForEducationalLoan(Student student) {
+    @Override
+    public boolean studentHasActiveEducationalLoan(Student student) {
         List<Loan> loans = student.getLoans();
+        student = SecurityContext.getCurrentUser();
         if (!loans.isEmpty()) {
             try {
                 for (Loan loan : loans) {
-                    if (loan.getLoanCategory().getLoanType().equals(LoanType.EDUCATIONAL_LOAN))
+                    if (loanCategoryService.findLoanCategoryForEducationLoan(student).getLoanType().equals(LoanType.EDUCATIONAL_LOAN)) {
                         if (loan.getCreationDate().getYear() == SecurityContext.getTodayDate().getYear())
-                            System.out.println("YOU HAVE ALREADY TAKEN THIS LOAN IN CURRENT TERM");
-                    return false;
+                            return true;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return true;
+        return false;
     }
 
-
     @Override
-    public boolean housingDepositLoanRegistration(Student student) {
-
+    public boolean studentHasActiveTuitionLoan(Student student) {
         List<Loan> loans = student.getLoans();
-
-        if (student.isMarried()) {
-            if (!student.isHasDorm()) {
+        student = SecurityContext.getCurrentUser();
+        if (!loans.isEmpty()) {
+            try {
                 for (Loan loan : loans) {
-                    if (!Objects.equals(student.getSpouse().getNationalId(), loan.getStudent().getNationalId()))
-                        return true;
+                    if (loanCategoryService.findLoanCategoryForEducationLoan(student).getLoanType().equals(LoanType.TUITION_LOAN)) {
+                        if (loan.getCreationDate().getYear() == SecurityContext.getTodayDate().getYear())
+                            return true;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return false;
     }
 
     @Override
-    public boolean tuitionLoanRegistration(Student student) {
-        return false;
+    public boolean housingDepositLoanRegistration(Student student) {
+        List<Loan> loans = student.getLoans();
+        boolean hasLoanBefore = false;
+        boolean spouseHasLoanBefore = false;
+        if (!loans.isEmpty()) {
+            for (Loan l : loans) {
+                if (l.getLoanCategory().getLoanType().equals(LoanType.HOUSING_DEPOSIT_LOAN)) {
+                    if (l.getLoanCategory().getAcademicLevel() == student.getAcademicLevel()) {
+                        hasLoanBefore = true;
+                        break;
+                    }
+                }
+            }
+            for (Loan loan : loans) {
+                if (findByNationalCodeLoanHousing(student.getSpouse().getNationalCode()) != null) {
+                    spouseHasLoanBefore = true;
+                    break;
+                }
+            }
+        }
+        return !hasLoanBefore && student.isMarried() && !student.isHasDorm() && !spouseHasLoanBefore;
     }
 
     @Override
-    public void setLoanCategoryForEducationalLoan(Student student) {
-        repository.setLoanCategoryForEducationalLoan(student);
+    public Loan findByNationalCodeLoanHousing(String nationalCode) {
+        return repository.findByNationalCodeLoanHousing(nationalCode);
     }
+
+    @Override
+    public List<Loan> findByStudent(Student student) {
+        return repository.findByStudent(student);
+    }
+
 }

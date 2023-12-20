@@ -1,14 +1,11 @@
 package menu;
 
-import entity.Card;
+import entity.City;
 import entity.person.Student;
-import entity.person.StudentSpouse;
 import entity.enumeration.AcademicLevel;
-import entity.enumeration.BankType;
 import entity.enumeration.UniversityType;
-import service.CardService;
+import service.CityService;
 import service.StudentService;
-import service.StudentSpouseService;
 import utility.ApplicationContext;
 import utility.Validation;
 
@@ -17,13 +14,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class RegistrationMenu extends MainMenu{
+public class RegistrationMenu extends MainMenu {
 
     StudentService studentService = ApplicationContext.getStudentService();
-    StudentSpouseService studentSpouseService = ApplicationContext.getStudentSpouseService();
+    CityService cityService = ApplicationContext.getCityService();
     Student student = new Student();
     MainMenu menu = new MainMenu();
-    StudentSpouse studentSpouse;
     Scanner scanner = new Scanner(System.in);
 
     public void singUp() {
@@ -51,12 +47,28 @@ public class RegistrationMenu extends MainMenu{
         student.setMotherName(motherName);
 
         System.out.print("NATIONAL ID : ");
-        String nationalId = scanner.next();
-        student.setNationalId(nationalId);
+        String nationalId;
+        boolean validNationalId = true;
+        while (validNationalId) {
+            nationalId = scanner.next();
+            if (Validation.isValidNationalId(nationalId)) {
+                student.setNationalId(nationalId);
+                validNationalId = false;
+            } else System.out.println("PLEASE ENTER VALID INFO");
+        }
+
 
         System.out.print("NATIONAL CODE : ");
-        String nationalCode = scanner.next();
-        student.setNationalCode(nationalCode);
+        boolean validNationalCode = true;
+        String nationalCode = null;
+        while (validNationalCode) {
+            nationalCode = scanner.next();
+            if (Validation.isValidStudentCode(nationalCode)) {
+                student.setNationalCode(nationalCode);
+                validNationalCode = false;
+            } else System.out.println("PLEASE ENTER VALID INFO");
+        }
+
 
         System.out.print("DATE OF BIRTHDAY (in this format yyyy-MM-dd) : ");
         String dob = scanner.next();
@@ -70,12 +82,28 @@ public class RegistrationMenu extends MainMenu{
 
 
         System.out.print("STUDENT NUMBER : ");
-        String studentNumber = scanner.next();
-        student.setStudentNumber(studentNumber);
+        boolean validStudentId = true;
+        String studentNumber;
+        while (validStudentId) {
+            studentNumber = scanner.next();
+            if (Validation.isValidStudentCode(studentNumber)) {
+                student.setStudentNumber(studentNumber);
+                validStudentId = false;
+            } else System.out.println("PLEASE ENTER VALID INFO");
+        }
+
 
         System.out.print("USER NAME (NATIONAL CODE) : ");
-        String username = scanner.next();
-        student.setUsername(username);
+        boolean isUsernameEqualToNID = true;
+        String username;
+        while (isUsernameEqualToNID) {
+            username = scanner.next();
+            if (username.equals(nationalCode)) {
+                student.setUsername(username);
+                isUsernameEqualToNID = false;
+            } else System.out.println("PLEASE ENTER VALID INFO");
+        }
+
 
         System.out.print("PASSWORD : ");
         String password = generatePassword();
@@ -91,8 +119,16 @@ public class RegistrationMenu extends MainMenu{
         isUniversityDailyCheck(universityType);
 
         System.out.print("ENTERING YEAR : ");
-        String enteringYear = scanner.next();
-        student.setEnteringYear(enteringYear);
+        boolean isValidYear = true;
+        Integer enteringYear;
+        while (isValidYear) {
+            enteringYear = scanner.nextInt();
+            if (Validation.isValidEnteringYear(enteringYear)) {
+                student.setEnteringYear(enteringYear);
+                isValidYear = false;
+            } else System.out.println("PLEASE ENTER VALID INFO");
+        }
+
 
         getAcademicLevel();
 
@@ -100,19 +136,82 @@ public class RegistrationMenu extends MainMenu{
 
         marriageStateCheck();
 
-        System.out.print("CITY : ");
-        String city = scanner.next();
+        chooseCity();
+
+        City city = cityService.fidById(1);
         student.setCity(city);
-
-        System.out.print("FULL ADDRESS : ");
-        String fullAddress = scanner.next();
-        student.setFullAddress(fullAddress);
-
-//        addCardInfo();
 
         studentService.saveOrUpdate(student);
         System.out.println("SUCCESSFULLY REGISTERED !\n");
 
+    }
+
+    private void chooseCity() {
+        String cityText = """
+                CHOOSE YOUR CITY :
+                ________________________________
+                1- Tehran
+                2- Gilan
+                3- Esfahan
+                4- AzarbayjanSharghi
+                5- Fars
+                6- Khozestan
+                7 -Qom
+                8- KhorasanRazavi
+                9- Alborz
+                10- OTHER
+                ________________________________
+                
+                """;
+        System.out.print(cityText);
+        int cityInput = menu.input();
+        switch (cityInput) {
+            case 1 -> {
+                City cityTehran = cityService.fidById(1);
+                student.setCity(cityTehran);
+            }
+            case 2 -> {
+                City cityGilan = cityService.fidById(2);
+                student.setCity(cityGilan);
+            }
+            case 3 -> {
+                City cityEsfahan = cityService.fidById(3);
+                student.setCity(cityEsfahan);
+            }
+            case 4 -> {
+                City cityAzarbayjanSharghi = cityService.fidById(4);
+                student.setCity(cityAzarbayjanSharghi);
+            }
+            case 5 -> {
+                City cityFars = cityService.fidById(5);
+                student.setCity(cityFars);
+            }
+            case 6 -> {
+                City cityKhozestan = cityService.fidById(6);
+                student.setCity(cityKhozestan);
+            }
+            case 7 -> {
+                City cityQom = cityService.fidById(7);
+                student.setCity(cityQom);
+            }
+            case 8 -> {
+                City cityKhorasanRazavi = cityService.fidById(8);
+                student.setCity(cityKhorasanRazavi);
+            }
+            case 9 -> {
+                City cityAlborz = cityService.fidById(9);
+                student.setCity(cityAlborz);
+            }
+            case 10 -> {
+                City cityOther = cityService.fidById(10);
+                student.setCity(cityOther);
+            }
+
+            default -> {
+                System.out.println("INVALID INPUT ! ");
+                singUp();
+            }
+        }
     }
 
     public static String generatePassword() {
@@ -130,62 +229,6 @@ public class RegistrationMenu extends MainMenu{
 
         return password;
     }
-
-//    private void addCardInfo() {
-//
-//        System.out.println("***PLEASE ENTER YOUR CARD INFORMATION : ***\n");
-//
-//        System.out.print("CARD NUMBER : ");
-//        String cardNumber = scanner.next();
-//        card.setCardNumber(cardNumber);
-//
-//        System.out.print("CVV2 : ");
-//        int cvv2 = menu.input();
-//        card.setCvv2(cvv2);
-//
-//        System.out.print("EXPIRATION DATE (in this format yyyy-MM-dd) : ");
-//        String expirationDate = scanner.next();
-//        DateFormat cardFormatter = new SimpleDateFormat("yyyy-MM-dd");
-//        try {
-//            card.setExpirationDate(cardFormatter.parse(expirationDate));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            singUp();
-//        }
-//
-//        chooseBankType();
-//
-//        card.setStudent(student);
-//        cardService.saveOrUpdate(card);
-//    }
-//
-//    private void chooseBankType() {
-//        String bankText = """
-//                ________________________________
-//
-//                PLEASE CHOOSE YOUR BANK :
-//                1 - MELLI
-//                2 - REFAH
-//                3 - TEJARAT
-//                4 - MASKAN
-//
-//                ________________________________
-//                """;
-//        System.out.println(bankText);
-//        int bankInput = menu.input();
-//        BankType bankType = null;
-//        switch (bankInput) {
-//            case 1 -> bankType = BankType.MELLI;
-//            case 2 -> bankType = BankType.REFAH;
-//            case 3 -> bankType = BankType.TEJARAT;
-//            case 4 -> bankType = BankType.MASKAN;
-//            default -> {
-//                System.out.println("INVALID INPUT ! ");
-//                singUp();
-//            }
-//        }
-//        card.setBank(bankType);
-//    }
 
     private void hasDormCheck() {
         String hasDormText = """
@@ -328,67 +371,8 @@ public class RegistrationMenu extends MainMenu{
         System.out.print(isMarriedText);
         int isMarriedInput = menu.input();
         switch (isMarriedInput) {
-            case 1 -> {
-                student.setMarried(true);
-                studentSpouse = new StudentSpouse();
-                System.out.println("*** PLEASE ENTER YOUR SPOUSE INFO : ");
-                System.out.print("SPOUSE FIRST NAME : ");
-                String spouseFirstname = scanner.next();
-                studentSpouse.setFirstname(spouseFirstname);
-
-                System.out.print("SPOUSE LAST NAME : ");
-                String spouseLastname = scanner.next();
-                studentSpouse.setLastname(spouseLastname);
-
-                System.out.print("SPOUSE FATHER NAME : ");
-                String spouseFatherName = scanner.next();
-                studentSpouse.setFatherName(spouseFatherName);
-
-                System.out.print("SPOUSE MOTHER NAME : ");
-                String spouseMotherName = scanner.next();
-                studentSpouse.setMotherName(spouseMotherName);
-
-                System.out.print("SPOUSE NATIONAL ID : ");
-                String spouseNationalId = scanner.next();
-                studentSpouse.setNationalId(spouseNationalId);
-
-                System.out.print("SPOUSE NATIONAL CODE : ");
-                String spouseNationalCode = scanner.next();
-                studentSpouse.setNationalCode(spouseNationalCode);
-
-                System.out.print("SPOUSE DATE OF BIRTHDAY (in this format yyyy-MM-dd) : ");
-                String spouseDob = scanner.next();
-                DateFormat spouseFormatter = new SimpleDateFormat("yyyy-MM-dd");
-                try {
-                    studentSpouse.setBirthDate(spouseFormatter.parse(spouseDob));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    singUp();
-                }
-
-                isStudentCheck();
-                studentSpouseService.saveOrUpdate(studentSpouse);
-            }
+            case 1 -> student.setMarried(true);
             case 2 -> student.setMarried(false);
-        }
-        student.setSpouse(studentSpouse);
-    }
-
-    private void isStudentCheck() {
-        String isStudentText = """
-                IS YOUR SPOUSE STUDENT :
-                1 - YES
-                2 - NO
-                """;
-        System.out.println(isStudentText);
-        int isStudentInput = menu.input();
-        switch (isStudentInput) {
-            case 1 -> studentSpouse.setIsStudent(true);
-            case 2 -> studentSpouse.setIsStudent(false);
-            default -> {
-                System.out.println("INVALID INPUT ! ");
-                singUp();
-            }
         }
     }
 }

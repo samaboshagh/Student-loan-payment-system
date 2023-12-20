@@ -18,20 +18,18 @@ public class Validation {
         return password.matches(".*\\d.*");
     }
 
-    public static boolean isValidNationalCode(String nationalCode) {
-        Pattern pattern =
-                Pattern.compile("^(0[1-9]|[1-3]\\d|40)([0-9]{3})([0-9]{3})([0-9])$");
-        return nationalCode.matches(pattern.pattern());
-    }
-
     public static Boolean isValidNationalId(String IdOfBirthCertificate) {
         Pattern pattern = Pattern.compile("\\d{10}");
         return pattern.matcher(IdOfBirthCertificate).matches();
     }
 
     public static Boolean isValidStudentCode(String studentCode) {
-        Pattern pattern = Pattern.compile("\\d{8}");
+        Pattern pattern = Pattern.compile("\\d{10}");
         return pattern.matcher(studentCode).matches();
+    }
+
+    public static Boolean isValidEnteringYear(Integer enteringYear) {
+        return enteringYear > 1360 && enteringYear < 2000;
     }
 
     public static boolean cardValidation(String cardNumber) {

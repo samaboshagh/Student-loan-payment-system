@@ -2,6 +2,7 @@ package service;
 
 import base.service.BaseEntityService;
 import entity.Installment;
+import entity.Loan;
 import entity.person.Student;
 
 import java.util.List;
@@ -9,11 +10,13 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface InstallmentService extends BaseEntityService<Installment, Integer> {
 
-    List<Installment> paidInstallments(Student student);
+    List<Object[]> paidInstallments(Student student);
 
-    List<Installment> unpaidInstallments(Student student);
+    List<Object[]> unpaidInstallments(Student student);
 
-    Double installmentCalculations();
+    Installment findByLoanNumber(Integer loanNumber,Loan loan);
 
-    void payInstallment(Integer loanNumber);
+    List<Installment> fillInstallment();
+
+    void changeIsPaidState(Installment installment);
 }

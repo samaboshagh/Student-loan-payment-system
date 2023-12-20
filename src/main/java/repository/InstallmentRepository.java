@@ -2,16 +2,18 @@ package repository;
 
 import base.repository.BaseEntityRepository;
 import entity.Installment;
+import entity.Loan;
 import entity.person.Student;
 
 import java.util.List;
+
 @SuppressWarnings("unused")
-public interface InstallmentRepository extends BaseEntityRepository<Installment,Integer> {
+public interface InstallmentRepository extends BaseEntityRepository<Installment, Integer> {
 
-    List<Installment> paidInstallments(Student student);
+    List<Object[]> paidInstallments(Student student);
 
-    List<Installment> unpaidInstallments(Student student);
+    List<Object[]> unpaidInstallments(Student student);
 
-    void payInstallment(Integer loanNumber);
+    Installment findByLoanNumber(Integer loanNumber,Loan loan);
 
 }

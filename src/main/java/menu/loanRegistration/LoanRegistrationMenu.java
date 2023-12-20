@@ -1,10 +1,15 @@
 package menu.loanRegistration;
 
 import entity.Card;
+import entity.Installment;
+import entity.Loan;
 import entity.enumeration.BankType;
 import entity.person.Student;
+import lombok.NoArgsConstructor;
 import menu.MainMenu;
 import service.CardService;
+import service.InstallmentService;
+import service.LoanService;
 import service.StudentService;
 import utility.ApplicationContext;
 import utility.SecurityContext;
@@ -12,8 +17,11 @@ import utility.SecurityContext;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
+@NoArgsConstructor
 @SuppressWarnings("unused")
 public class LoanRegistrationMenu {
 
@@ -45,35 +53,43 @@ public class LoanRegistrationMenu {
         }
     }
 
-    public static void chooseLoanType() {
+    public void chooseLoanType() {
 
-        String text = """
-                *** WHICH TYPE OF LOAN DO YOU WANT REGISTER TO : ***
-                1 - EDUCATIONAL LOAN
-                2 - HOUSING DEPOSIT LOAN
-                3 - TUITION LOAN
-                4 - BACK TO MAIN MENU
-                """;
-        System.out.println(text);
-        int chooseType = menu.input();
-        switch (chooseType) {
+        Student student = SecurityContext.getCurrentUser();
+        LocalDate date = SecurityContext.getTodayDate();
 
-            case 1 -> new EducationalLoanMenu().educationalLoanRegistration();
+        if (!studentService.isStudentGraduated(student, date)) {
+            String text = """
+                    *** WHICH TYPE OF LOAN DO YOU WANT REGISTER TO : ***
+                    1 - EDUCATIONAL LOAN
+                    2 - HOUSING DEPOSIT LOAN
+                    3 - TUITION LOAN
+                    4 - BACK TO MAIN MENU
+                    """;
+            System.out.println(text);
+            int chooseType = menu.input();
+            switch (chooseType) {
 
-            case 2 -> new HousingDepositLoanController();
+                case 1 -> new EducationalLoanMenu().educationalLoanRegistration();
 
-            case 3 -> new TuitionLoanMenu();
+                case 2 -> new HousingDepositLoanMenu().housingDepositLoanRegistration();
 
-            case 4 -> menu.start();
+                case 3 -> new TuitionLoanMenu().tuitionLoanRegistration();
 
-            default -> {
-                System.out.println("INVALID INPUT ! ");
-                chooseLoanType();
+                case 4 -> menu.start();
+
+                default -> {
+                    System.out.println("INVALID INPUT ! ");
+                    chooseLoanType();
+                }
             }
+        } else {
+            System.out.println(" YOU GRADUATED ! \n");
+            menu.start();
         }
     }
 
-    public static Card addCardInfo() {
+    public static void addCardInfo() {
 
         System.out.println("***PLEASE ENTER YOUR CARD INFORMATION : ***\n");
 
@@ -99,8 +115,6 @@ public class LoanRegistrationMenu {
         Student user = SecurityContext.getCurrentUser();
         card.setStudent(user);
         cardService.saveOrUpdate(card);
-
-        return card;
     }
 
     public static void chooseBankType() {
@@ -129,5 +143,18 @@ public class LoanRegistrationMenu {
             }
         }
         card.setBank(bankType);
+    }
+
+    static void tuitionAndEducationLoanRegistration(Student currentUser, Loan loan, LoanService loanService, InstallmentService installmentService) {
+        LoanRegistrationMenu.addCardInfo();
+        loan.setStudent(currentUser);
+        loanService.saveOrUpdate(loan);
+        SecurityContext.fillContext(loan);
+        List<Installment> installments = installmentService.fillInstallment();
+        for (Installment installment : installments) {
+            installmentService.saveOrUpdate(installment);
+        }
+        if (loan.getStudent() != null)
+            System.out.println("SUCCESSFULLY REGISTERED \n");
     }
 }
