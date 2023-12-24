@@ -38,6 +38,11 @@ public class InstallmentServiceImpl
     }
 
     @Override
+    public List<Object[]> seeUnpaidInstallmentsForEachStudent(Student student, Loan loan) {
+        return repository.seeUnpaidInstallmentsForEachStudent(student,loan);
+    }
+
+    @Override
     public Installment findByLoanNumber(Integer loanNumber, Loan loan) {
         return repository.findByLoanNumber(loanNumber, loan);
     }

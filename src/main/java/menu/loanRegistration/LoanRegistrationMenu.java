@@ -3,6 +3,7 @@ package menu.loanRegistration;
 import entity.Card;
 import entity.Installment;
 import entity.Loan;
+import entity.LoanCategory;
 import entity.enumeration.BankType;
 import entity.person.Student;
 import lombok.NoArgsConstructor;
@@ -113,7 +114,7 @@ public class LoanRegistrationMenu {
             if (Validation.isValidCvv2(cvv2)) {
                 card.setCvv2(cvv2);
                 isValidCvv = false;
-            } else System.out.println(" PLEASE ENTER VALID CVV !");
+            } else System.out.print(" PLEASE ENTER VALID CVV !");
         }
 
 
@@ -161,9 +162,10 @@ public class LoanRegistrationMenu {
         card.setBank(bankType);
     }
 
-    static void tuitionAndEducationLoanRegistration(Student currentUser, Loan loan, LoanService loanService, InstallmentService installmentService) {
+    static void tuitionAndEducationLoanRegistration(Student currentUser, Loan loan, LoanService loanService, InstallmentService installmentService, LoanCategory category) {
         LoanRegistrationMenu.addCardInfo();
         loan.setStudent(currentUser);
+        loan.setLoanCategory(category);
         loanService.saveOrUpdate(loan);
         SecurityContext.fillContext(loan);
         List<Installment> installments = installmentService.fillInstallment();

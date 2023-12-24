@@ -61,6 +61,26 @@ public class InstallmentRepositoryImpl extends BaseEntityRepositoryImpl<Installm
     }
 
     @Override
+    public List<Object[]> seeUnpaidInstallmentsForEachStudent(Student student,Loan loan) {
+        try {
+            List<Object[]> results = entityManager.createQuery("""
+                            SELECT i.loanNumber , i.dueDate , i.amount FROM Installment i
+                            WHERE i.isPaid IS false AND i.loan.student = :student AND i.loan = :loan
+                            """, Object[].class)
+                    .setParameter("student", student)
+                    .setParameter("loan",loan)
+                    .getResultList();
+            for (Object[] result : results) {
+                int numberOfInstallment = (int) result[0];
+                LocalDate dueDate = (LocalDate) result[1];
+            }
+            return results;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
     public Installment findByLoanNumber(Integer loanNumber, Loan loan) {
         try {
             return entityManager.createQuery("""

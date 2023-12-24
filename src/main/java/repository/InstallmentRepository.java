@@ -14,6 +14,8 @@ public interface InstallmentRepository extends BaseEntityRepository<Installment,
 
     List<Object[]> unpaidInstallments(Student student);
 
+    List<Object[]> seeUnpaidInstallmentsForEachStudent(Student student,Loan loan);
+
     Installment findByLoanNumber(Integer loanNumber,Loan loan);
 
 }

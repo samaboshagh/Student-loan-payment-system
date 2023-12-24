@@ -24,9 +24,9 @@ public class EducationalLoanMenu {
         Loan loan = new Loan();
         loan.setCreationDate(todayDate);
         LoanCategory category = loanCategoryService.findLoanCategoryForEducationLoan(currentUser);
-        loan.setLoanCategory(category);
+//        loan.setLoanCategory(category);
         if (!loanService.studentHasActiveEducationalLoan(currentUser)) {
-            LoanRegistrationMenu.tuitionAndEducationLoanRegistration(currentUser, loan, loanService, installmentService);
+            LoanRegistrationMenu.tuitionAndEducationLoanRegistration(currentUser, loan, loanService, installmentService,category);
 
         } else {
             System.out.println("YOU ALREADY HAVE ACTIVE LOAN ! \n");

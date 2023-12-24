@@ -51,9 +51,8 @@ public class LoanCategoryRepositoryImpl
                     .setParameter("student", student)
                     .getSingleResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -71,7 +70,6 @@ public class LoanCategoryRepositoryImpl
                     .setParameter("isBigCity", isBigCity)
                     .getSingleResult();
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

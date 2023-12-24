@@ -28,7 +28,7 @@ public class HousingDepositLoanMenu {
     LoanService loanService = ApplicationContext.getLoanService();
     LoanCategoryService loanCategoryService = ApplicationContext.getLoanCategoryService();
     StudentSpouseService studentSpouseService = ApplicationContext.getStudentSpouseService();
-    InstallmentService installmentService =ApplicationContext.getInstallmentService();
+    InstallmentService installmentService = ApplicationContext.getInstallmentService();
 
     StudentSpouse studentSpouse;
     Student student;
@@ -38,29 +38,30 @@ public class HousingDepositLoanMenu {
     public void housingDepositLoanRegistration() {
         student = SecurityContext.getCurrentUser();
         LocalDate date = SecurityContext.getTodayDate();
-        fillSpouseInfo();
-        if (loanService.housingDepositLoanRegistration(student)) {
-            Loan loan = new Loan();
-            LoanCategory category = loanCategoryService.findLoanCategoryForHousingDepositLoan(student);
-            loan.setCreationDate(date);
-            loan.setLoanCategory(category);
-            loan.setStudent(student);
+        if (student.isMarried()) {
+            fillSpouseInfo();
+            if (loanService.housingDepositLoanRegistration(student)) {
+                Loan loan = new Loan();
+                LoanCategory category = loanCategoryService.findLoanCategoryForHousingDepositLoan(student);
+                loan.setCreationDate(date);
+                loan.setLoanCategory(category);
+                loan.setStudent(student);
 
-            getAddress(loan);
+                getAddress(loan);
 
-            LoanRegistrationMenu.addCardInfo();
+                LoanRegistrationMenu.addCardInfo();
 
-            loanService.saveOrUpdate(loan);
+                loanService.saveOrUpdate(loan);
 
-            SecurityContext.fillContext(loan);
-            List<Installment> installments = installmentService.fillInstallment();
-            for (Installment installment : installments){
-                installmentService.saveOrUpdate(installment);
+                SecurityContext.fillContext(loan);
+                List<Installment> installments = installmentService.fillInstallment();
+                for (Installment installment : installments) {
+                    installmentService.saveOrUpdate(installment);
+                }
+                System.out.println("SUCCESSFULLY REGISTERED \n");
             }
-            System.out.println("SUCCESSFULLY REGISTERED \n");
-
         } else
-            System.out.println("TRY AGAIN !");
+            System.out.println("YOU ARE NOT QUALIFIED ! \n");
     }
 
     private void getAddress(Loan loan) {

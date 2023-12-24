@@ -14,8 +14,10 @@ import utility.Validation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class RePayInstallment {
@@ -33,7 +35,12 @@ public class RePayInstallment {
         Integer loanId = scanner.nextInt();
         Loan loan = loanService.findById(loanId).orElse(null);
         SecurityContext.fillContext(loan);
-        new UnpaidInstallments().seeUnpaidInstallments();
+        installmentService.seeUnpaidInstallmentsForEachStudent(student, loan)
+                .stream()
+                .map(row -> Arrays.stream(row)
+                        .map(Object::toString)
+                        .collect(Collectors.joining(" ")))
+                .forEach(System.out::println);
         System.out.print("PLEASE ENTER THE LOAN NUMBER THAT YOU WANT TO PAY : ");
         Integer loanNumber = scanner.nextInt();
         Optional<Installment> optionalInstallment = Optional.ofNullable(installmentService.findByLoanNumber(loanNumber, loan));

@@ -1,6 +1,5 @@
 package menu.loanRegistration;
 
-import entity.Installment;
 import entity.Loan;
 import entity.LoanCategory;
 import entity.person.Student;
@@ -11,14 +10,13 @@ import utility.ApplicationContext;
 import utility.SecurityContext;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @SuppressWarnings("unused")
 public class TuitionLoanMenu {
 
     LoanService loanService = ApplicationContext.getLoanService();
     LoanCategoryService loanCategoryService = ApplicationContext.getLoanCategoryService();
-    InstallmentService installmentService =ApplicationContext.getInstallmentService();
+    InstallmentService installmentService = ApplicationContext.getInstallmentService();
 
 
     public void tuitionLoanRegistration() {
@@ -28,10 +26,10 @@ public class TuitionLoanMenu {
         Loan loan = new Loan();
         loan.setCreationDate(todayDate);
         LoanCategory category = loanCategoryService.findLoanCategoryForTuitionLoan(currentUser);
-        loan.setLoanCategory(category);
+//        loan.setLoanCategory(category);
 
         if (!loanService.studentHasActiveTuitionLoan(currentUser) && !currentUser.isDaily()) {
-            LoanRegistrationMenu.tuitionAndEducationLoanRegistration(currentUser, loan, loanService, installmentService);
+            LoanRegistrationMenu.tuitionAndEducationLoanRegistration(currentUser, loan, loanService, installmentService, category);
 
         } else {
             System.out.println("YOU ALREADY HAVE ACTIVE LOAN ! \n");
